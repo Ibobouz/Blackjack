@@ -10,6 +10,7 @@ let playerEl = document.getElementById("player-el")
 let player = JSON.parse(localStorage.getItem("player"))
 
 playerEl.textContent = player.name + ": $" + player.chips + " Bet: $" + player.Bet;
+document.getElementById("NewCard").style.display = "none"
 
 function getRandomCard() {
     let randomNumber = Math.floor( Math.random()*13 ) + 1
@@ -29,6 +30,7 @@ function DrawCards() {
     cards = [firstCard, secondCard]
     sum = firstCard + secondCard
     renderGame()
+    document.getElementById("NewCard").style.display = "inline-block"
 }
 
 function renderGame() {
