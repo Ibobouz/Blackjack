@@ -1,0 +1,21 @@
+<html>
+<head>
+    <link rel="stylesheet" href="MoneyBet.css">
+</head>
+<body>
+<h1>Blackjack</h1>
+<p id="message-el">How much you want to bet?</p>
+<div class="button-row">
+    <button class="CountButton" onclick="minusChips()">-</button>
+    <span class="counter" id="counter">5</span>
+    <button class="CountButton" onclick="plusChips()">+</button>
+</div>
+<p id="ErrorMessage"></p>
+<a href="../GameStarted/GameStarted.html">
+    <button id="startGame" onclick="CreditChange()">START GAME</button>
+</a>
+
+<p id="player-el"></p>
+<script type="module" src="../MoneyBet/MoneyBet.js"></script>
+</body>
+</html>

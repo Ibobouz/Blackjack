@@ -1,23 +1,32 @@
 body {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', Arial, sans-serif;
-    background-image: url("images/table.png");
+    background-image: url("../images/table.png");
     background-size: cover;
     font-weight: bold;
     color: white;
     text-align: center;
+    align-content: center;
+
 }
 
 h1 {
     color: goldenrod;
+
+    font-size: xxx-large;
 }
 
-#message-el {
-    font-style: italic;
+.CountButton {
+    color: White;
+    width: 50px;
+    align-content: center;
 }
+
 
 button {
+    align-content: center;
     color: #016f32;
-    width: 150px;
+    width: 500px;
+    height: 40px;
     background: goldenrod;
     padding-top: 5px;
     padding-bottom: 5px;
