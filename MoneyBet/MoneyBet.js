@@ -7,6 +7,11 @@ let name = player.name
 let chips = player.chips
 let Bet = player.Bet
 playerEl.textContent = name + ": $" + chips
+if (player.chips < 5) {
+    alert("You need at least $5 to play!")
+    window.location.href = "../index/index.html"
+}
+
 
 function minusChips() {
     if (+counter.innerText === 5) {

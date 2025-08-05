@@ -1,55 +1,73 @@
+import { fullDeck } from "./deck.js";
+
 let cards = []
 let sum = 0
 let hasBlackJack = false
 let isAlive = false
-let message = document.getElementById('message')
-let messageEl = document.getElementById("message-el")
-let sumEl = document.getElementById("sum-el")
-let cardsEl = document.getElementById("cards-el")
-let playerEl = document.getElementById("player-el")
+const message = document.getElementById('message')
+const messageEl = document.getElementById("message-el")
+const sumEl = document.getElementById("sum-el")
+const cardsEl = document.getElementById("cards-el")
+const playerEl = document.getElementById("player-el")
+const DrawBtn = document.getElementById("DrawCards")
+const NewCardBtn = document.getElementById("NewCard")
+const cashoutBtn = document.getElementById("Cashout")
+const mainMenuBtn = document.getElementById("mainMenu")
 let player = JSON.parse(localStorage.getItem("player"))
 
 playerEl.textContent = player.name + ": $" + player.chips + " Bet: $" + player.Bet;
 document.getElementById("NewCard").style.display = "none"
 
 function getRandomCard() {
-    let randomNumber = Math.floor( Math.random()*13 ) + 1
-    if (randomNumber > 10) {
-        return 10
-    } else if (randomNumber === 1) {
-        return 11
+     let randomCard = fullDeck[Math.floor(Math.random() * fullDeck.length)]
+     let numericValue
+     if (["J", "Q", "K"].includes(randomCard.value)) {
+         numericValue = 10
+     } else if (randomCard.value === "A") {
+         numericValue = 11
     } else {
-        return randomNumber
-    }
-}
-
-function DrawCards() {
+         numericValue = Number(randomCard.value)
+     }
+     return {
+       suit: randomCard.suit,
+       value: randomCard.value,
+       img: randomCard.img,
+       numericValue: numericValue
+     };
+ }
+DrawBtn.addEventListener ("click", function DrawCards() {
     isAlive = true
     let firstCard = getRandomCard()
     let secondCard = getRandomCard()
     cards = [firstCard, secondCard]
-    sum = firstCard + secondCard
+    sum = firstCard.numericValue + secondCard.numericValue
     renderGame()
     document.getElementById("NewCard").style.display = "inline-block"
-}
+    document.getElementById("DrawCards").style.display = "none"
+    return firstCard && secondCard
+})
+
 
 function renderGame() {
-    cardsEl.textContent = "Cards: "
-    for (let i = 0; i < cards.length; i++) {
-        cardsEl.textContent += cards[i] + " "
-    }
-
-    sumEl.textContent = "Sum: " + sum
     
+    cardsEl.innerHTML = "Cards: "
+    cards.forEach(card => {
+         const imgEl = document.createElement("img");
+         imgEl.src = card.img;                // Pfad aus deck.js
+         imgEl.alt = `${card.value} of ${card.suit}`;
+         cardsEl.appendChild(imgEl);
+     });
+    sumEl.textContent = "Sum: " + sum
+
     if (sum <= 20) {
         message.textContent = "Do you want to draw a new card?"
-   
+
     } else if (sum === 21) {
         message.textContent = "You've got Blackjack!"
         hasBlackJack = true
         document.getElementById("DrawCards").style.display = "none"
         document.getElementById("NewCard").style.display = "none"
-        
+
     } else if (sum > 21) {
         message.textContent = "You're out of the game!"
         isAlive = false
@@ -60,27 +78,29 @@ function renderGame() {
     }
 }
 
-
-function newCard() {
-    if (isAlive === true && hasBlackJack === false) {
+NewCardBtn.addEventListener("click", function newCard() {
+     if (isAlive === true && hasBlackJack === false) {
         let card = getRandomCard()
-        sum += card
+        sum += card.numericValue
         cards.push(card)
         renderGame()
     }
-}
 
-function cashOut() {
+})
+
+cashoutBtn.addEventListener("click", function cashOut() {
     document.getElementById("DrawCards").style.display = "none"
     document.getElementById("NewCard").style.display = "none"
     let wins = 0
-    if (sum <= 10 && sum > 21) {
+    if (sum < 10 || sum > 21) {
         wins = 0
     } else if (sum > 10 && sum < 15) {
         wins = player.Bet 
-    } else if (sum > 15 && sum < 21) {
-        let multiplier = 1 + Math.random() * 0.5
+    } else if (sum >= 15 && sum < 20) {
+        let multiplier = 1 + (sum - 10) * 0.1
         wins = Math.floor(player.Bet * multiplier)
+    } else if(sum ===20) {
+        wins = Math.floor(player.Bet * 1.95)
     } else if (sum === 21) {
         wins = player.Bet * 2
     }
@@ -89,8 +109,8 @@ function cashOut() {
     messageEl.textContent = "You've won $" + wins
     document.getElementById("Cashout").style.display = "none"
     document.getElementById("mainMenu").style.display = "inline-block"
-}
+})
 
-function mainMenu() {
+mainMenuBtn.addEventListener("click", function mainMenu() {
     window.location.href = "../index/index.html"
-}
+})
