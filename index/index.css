@@ -1,36 +1,44 @@
+/* index.css */
+
 body {
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', Arial, sans-serif;
-    background-image: url("../images/table.png");
+    background: url("../images/table.png") no-repeat center center fixed;
     background-size: cover;
-    font-weight: bold;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: white;
     text-align: center;
-    align-content: center;
-    
+    padding: 20px;
+    margin: 0;
 }
 
 h1 {
-    color: goldenrod;
-   
-    font-size: xxx-large;
+    color: gold;
+    font-size: 3em;
+    margin-bottom: 10px;
 }
 
 #message-el {
-    font-style: italic;
-    
+    font-size: 1.2em;
+    margin: 20px 0;
 }
 
 button {
-    align-content: center;
-    color: #016f32;
-    width: 500px;
-    height: 40px;
-    background: goldenrod;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    font-weight: bold;
+    background-color: goldenrod;
+    color: white;
     border: none;
-    border-radius: 2px;
-    margin-bottom: 2px;
-    margin-top: 2px;
+    padding: 12px 24px;
+    margin: 20px 8px;
+    border-radius: 8px;
+    font-size: 1.2em;
+    cursor: pointer;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+    transition: background-color 0.2s ease;
+}
+
+button:hover {
+    background-color: #d4a017;
+}
+
+#player-el {
+    font-size: 1.2em;
+    margin-top: 20px;
 }

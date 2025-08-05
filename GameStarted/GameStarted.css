@@ -1,35 +1,96 @@
+/* Grundlayout */
 body {
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', Arial, sans-serif;
-    background-image: url("../images/table.png");
+    background: url("../images/table.png") no-repeat center center fixed;
     background-size: cover;
-    font-weight: bold;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: white;
     text-align: center;
-    align-content: center;
-
+    padding: 20px;
+    margin: 0;
 }
 
+
+/* Titel */
 h1 {
-    color: goldenrod;
-
-    font-size: xxx-large;
+    color: gold;
+    font-size: 3em;
+    margin-bottom: 10px;
 }
 
-#message-el {
+/* Rundeninfo + Nachricht */
+#message-el, #message {
+    font-size: 1.2em;
+    margin: 10px 0;
+    display: block;
     font-style: italic;
-
 }
 
-button {
-    color: #016f32;
-    width: 500px;
-    height: 40px;
-    background: goldenrod;
-    padding-top: 5px;
-    padding-bottom: 5px;
+/* Kartenanzeige */
+#cards-el {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    min-height: 140px;
+}
+
+#cards-el img {
+    height: 140px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    transition: transform 0.2s ease-in-out;
+}
+
+#cards-el img:hover {
+    transform: scale(1.05);
+}
+
+/* Summe */
+#sum-el {
+    font-size: 1.5em;
+    margin: 15px 0;
     font-weight: bold;
+}
+
+/* Buttons */
+button {
+    background-color: goldenrod;
+    color: white;
     border: none;
-    border-radius: 2px;
-    margin-bottom: 2px;
-    margin-top: 2px;
+    padding: 12px 24px;
+    margin: 10px 8px;
+    border-radius: 8px;
+    font-size: 1em;
+    cursor: pointer;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+    transition: background-color 0.2s ease;
+}
+
+button:hover {
+    background-color: #d4a017;
+}
+
+button:disabled {
+    background-color: #999;
+    cursor: not-allowed;
+}
+
+/* Spieleranzeige */
+#player-el {
+    font-size: 1.2em;
+    margin-top: 20px;
+}
+
+/* Responsives Verhalten */
+@media (max-width: 600px) {
+    #cards-el img {
+        height: 100px;
+    }
+
+    button {
+        width: 90%;
+        margin: 10px 0;
+    }
 }

@@ -1,38 +1,105 @@
+/* MoneyBet.css */
+
 body {
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', Arial, sans-serif;
-    background-image: url("../images/table.png");
+    background: url("../images/table.png") no-repeat center center fixed;
     background-size: cover;
-    font-weight: bold;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: white;
     text-align: center;
-    align-content: center;
-
+    padding: 20px;
+    margin: 0;
 }
 
+/* Titel */
 h1 {
-    color: goldenrod;
-
-    font-size: xxx-large;
+    color: gold;
+    font-size: 3em;
+    margin-bottom: 20px;
 }
 
+/* Frage */
+#message-el {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
+/* Button-Layout für +/- */
+.button-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin: 20px 0;
+}
+
+/* Counter */
+.counter {
+    font-size: 2em;
+    min-width: 60px;
+    display: inline-block;
+}
+
+/* Fehlermeldung */
+#ErrorMessage {
+    color: #ffcccb;
+    font-size: 1em;
+    margin-bottom: 15px;
+    height: 1.2em;
+}
+
+/* +/- Buttons */
 .CountButton {
-    color: White;
-    width: 50px;
-    align-content: center;
+    background-color: goldenrod;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1.5em;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+    transition: background-color 0.2s ease;
 }
 
+.CountButton:hover {
+    background-color: #d4a017;
+}
 
-button {
-    align-content: center;
-    color: #016f32;
-    width: 500px;
-    height: 40px;
-    background: goldenrod;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    font-weight: bold;
+/* Start Button */
+#startGame {
+    background-color: goldenrod;
+    color: white;
     border: none;
-    border-radius: 2px;
-    margin-bottom: 2px;
-    margin-top: 2px;
+    padding: 14px 40px;
+    font-size: 1.2em;
+    margin-top: 30px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+    transition: background-color 0.2s ease;
+}
+
+#startGame:hover {
+    background-color: #d4a017;
+}
+
+/* Spieleranzeige */
+#player-el {
+    font-size: 1.2em;
+    margin-top: 30px;
+}
+
+/* Responsive für kleinere Screens */
+@media (max-width: 600px) {
+    .button-row {
+        flex-direction: column;
+    }
+
+    .CountButton {
+        width: 80px;
+        margin: 10px auto;
+    }
+
+    #startGame {
+        width: 90%;
+    }
 }
