@@ -1,45 +1,53 @@
-let playerEl = document.getElementById("player-el")
-let startButton= document.getElementById("startGame")
-let counter = document.getElementById("counter")
-let error = document.getElementById("ErrorMessage")
-let player = JSON.parse(localStorage.getItem("player"))
-let name = player.name
-let chips = player.chips
-let Bet = player.Bet
-playerEl.textContent = name + ": $" + chips
-if (player.chips < 5) {
-    alert("You need at least $5 to play!")
-    window.location.href = "../index/index.html"
-}
+document.addEventListener("DOMContentLoaded", () => {
+    const Minusbtn = document.getElementById("minusBtn")
+    const PlusBtn = document.getElementById("plusBtn")
+    const playerEl = document.getElementById("player-el")
+    const startButton = document.getElementById("startGame")
+    const counter = document.getElementById("counter")
+    const error = document.getElementById("ErrorMessage")
 
-
-function minusChips() {
-    if (+counter.innerText === 5) {
-        error.innerText = "You've reached the minimum!"
-    } else {
-        counter.innerText = Number(counter.innerText) - 5;
+    let playerData = JSON.parse(localStorage.getItem("player"))
+    if (!playerData) {
+        alert("No player data found.")
+        window.location.href = "../index/index.html"
+        return
     }
-}
-function plusChips() {
-    if (+counter.innerText === player.chips) {
-        error.innerText = "You've reached the limit!"
-    } else {
-        counter.innerText = Number(counter.innerText) + 5;
+
+    const name = playerData.name
+    const chips = playerData.chips
+    playerEl.textContent = name + ": $" + chips
+
+    if (chips < 5) {
+        alert("You need at least $5 to play!")
+        window.location.href = "../index/index.html"
+        return
     }
-}
 
-function CreditChange() {
-    player.chips -= +counter.innerText
-    player.Bet = +counter.innerText
-    localStorage.setItem("player", JSON.stringify(player))
-}
+    function minusChips() {
+        if (+counter.innerText === 5) {
+            error.innerText = "You've reached the minimum!"
+        } else {
+            counter.innerText = Number(counter.innerText) - 5
+            error.innerText = ""
+        }
+    }
 
+    function plusChips() {
+        if (+counter.innerText === chips) {
+            error.innerText = "You've reached the limit!"
+        } else {
+            counter.innerText = Number(counter.innerText) + 5
+            error.innerText = ""
+        }
+    }
 
-window.minusChips = minusChips;
-window.plusChips = plusChips;
-window.CreditChange = CreditChange;
+    function CreditChange() {
+        playerData.chips -= +counter.innerText
+        playerData.Bet = +counter.innerText
+        localStorage.setItem("player", JSON.stringify(playerData))
+    }
 
-
-
-
-
+    Minusbtn.addEventListener("click", minusChips)
+    PlusBtn.addEventListener("click", plusChips)
+    startButton.addEventListener("click", CreditChange)
+})

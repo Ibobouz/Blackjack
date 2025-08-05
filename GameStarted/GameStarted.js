@@ -13,9 +13,9 @@ const DrawBtn = document.getElementById("DrawCards")
 const NewCardBtn = document.getElementById("NewCard")
 const cashoutBtn = document.getElementById("Cashout")
 const mainMenuBtn = document.getElementById("mainMenu")
-let player = JSON.parse(localStorage.getItem("player"))
+let playerData = JSON.parse(localStorage.getItem("player"))
 
-playerEl.textContent = player.name + ": $" + player.chips + " Bet: $" + player.Bet;
+playerEl.textContent = playerData.name + ": $" + playerData.chips + " Bet: $" + playerData.Bet;
 document.getElementById("NewCard").style.display = "none"
 
 function getRandomCard() {
@@ -95,17 +95,17 @@ cashoutBtn.addEventListener("click", function cashOut() {
     if (sum < 10 || sum > 21) {
         wins = 0
     } else if (sum > 10 && sum < 15) {
-        wins = player.Bet 
+        wins = playerData.Bet 
     } else if (sum >= 15 && sum < 20) {
         let multiplier = 1 + (sum - 10) * 0.1
-        wins = Math.floor(player.Bet * multiplier)
+        wins = Math.floor(playerData.Bet * multiplier)
     } else if(sum ===20) {
-        wins = Math.floor(player.Bet * 1.95)
+        wins = Math.floor(playerData.Bet * 1.95)
     } else if (sum === 21) {
-        wins = player.Bet * 2
+        wins = playerData.Bet * 2
     }
-    player.chips += wins
-    localStorage.setItem("player", JSON.stringify(player))
+    playerData.chips += wins
+    localStorage.setItem("player", JSON.stringify(playerData))
     messageEl.textContent = "You've won $" + wins
     document.getElementById("Cashout").style.display = "none"
     document.getElementById("mainMenu").style.display = "inline-block"
@@ -114,3 +114,4 @@ cashoutBtn.addEventListener("click", function cashOut() {
 mainMenuBtn.addEventListener("click", function mainMenu() {
     window.location.href = "../index/index.html"
 })
+window.playerData = playerData
