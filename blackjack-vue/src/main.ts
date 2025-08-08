@@ -1,11 +1,15 @@
-// src/main.ts
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
-import { router }       from './router';
-import App              from './App.vue';
-import '@/assets/style.css';
+import App from './App.vue';
+import { useGameStore } from '@/store/game';
+import { router } from './router';
+import "@/assets/style.css"
 
 const app = createApp(App);
-app.use(createPinia());
-app.use(router);                  // <-- router hier registrieren
+const pinia = createPinia();
+app.use(pinia);
+app.use(router);
 app.mount('#app');
+
+// Direkt nach Mounting Chips laden
+useGameStore().loadChips();

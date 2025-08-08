@@ -5,6 +5,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { fullDeck, pickRandomCard } from '@/composables/useDeck';
+
 
 export default defineComponent({
   name: 'Card',
