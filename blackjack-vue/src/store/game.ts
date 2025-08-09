@@ -15,6 +15,8 @@ export interface GameState {
   playerName: string;
   chips: number;        // aktueller Kontostand
   currentBet: number;   // gerade gesetzter Einsatz
+  roundFinished: boolean;
+  roundSettled: boolean
 }
 
 export const useGameStore = defineStore('game', {
@@ -30,6 +32,8 @@ export const useGameStore = defineStore('game', {
     playerName: '',
     chips: Number(localStorage.getItem('chips') ?? 200),
     currentBet: Number(localStorage.getItem('currentBet')) || 0,
+    roundFinished: false,
+    roundSettled: false
   }),
 
   actions: {
@@ -43,6 +47,8 @@ export const useGameStore = defineStore('game', {
     startGame() {
       this.isAlive = true;
       this.hasBlackjack = false;
+      this.roundFinished = false;
+      this.roundSettled = false; 
       // Ziehe zwei Karten
       this.cards = [ pickRandomCard(), pickRandomCard() ];
       // Berechne Summe
@@ -53,9 +59,12 @@ export const useGameStore = defineStore('game', {
       } else if (this.sum === 21) {
         this.message = "You've got Blackjack!";
         this.hasBlackjack = true;
+        this.isAlive = false
+        this.roundFinished = true
       } else {
         this.message = "You're out of the game!";
         this.isAlive = false;
+        this.roundFinished = true
       }
     },
 
@@ -71,9 +80,13 @@ export const useGameStore = defineStore('game', {
       } else if (this.sum === 21) {
         this.message = "You've got Blackjack!";
         this.hasBlackjack = true;
+        this.isAlive = false;
+        this.roundFinished = true
       } else {
         this.message = "You're out of the game!";
         this.isAlive = false;
+        this.roundFinished = true
+      
       }
     },
     
@@ -117,35 +130,67 @@ export const useGameStore = defineStore('game', {
       this.playerName = saved;
     
   },
+  privatePayout(sum: number, bet: number): number {
+    if (sum < 10 || sum > 21) return 0;
+    if (sum > 10 && sum < 15) return bet;
+    if (sum >= 15 && sum < 20) return Math.floor(bet * (1 + (sum - 10) * 0.1));
+    if (sum === 20) return Math.floor(bet * 1.95);
+    if (sum === 21) return Math.floor(bet * 2.5);
+    return 0;
+  },
+
+settleRound() {
+  if (!this.roundFinished || this.roundSettled) return;
+
+  let delta = 0;
+
+  if (this.sum > 21) {
+    // Bust loses the bet
+    delta = -this.currentBet;
+    this.message = `Busted! You lost $${this.currentBet}.`;
+  } else {
+    // Your payout rule (e.g., 21 pays differently if you want)
+    const wins = this.privatePayout(this.sum, this.currentBet);
+    delta = wins;
+    this.message = `You've won $${wins}.`;
+  }
+
+  this.chips += delta;
+  this.saveChips(); // <- ALWAYS persist here
+
+  this.currentBet = 0;
+  localStorage.removeItem('currentBet');
+
+  this.roundSettled = true;
+  this.isAlive = false;
+},
+
+
+  /** Cash-Out Button → sofort auszahlen */
 cashOut() {
-      // Buttons ausblenden (View bindet später an isAlive)
-      this.isAlive = false;
+  if (this.roundSettled) return;
 
-      let wins = 0;
-      const b = this.currentBet;
-      const s = this.sum;
+  // Freeze the round if it wasn't marked finished yet
+  if (!this.roundFinished) {
+    this.roundFinished = true;
+    this.isAlive = false; // player stands / stops drawing
+  }
 
-      if (s < 10 || s > 21) {
-        wins = 0;
-      } else if (s > 10 && s < 15) {
-        wins = b;
-      } else if (s >= 15 && s < 20) {
-        const multiplier = 1 + (s - 10) * 0.1;
-        wins = Math.floor(b * multiplier);
-      } else if (s === 20) {
-        wins = Math.floor(b * 1.95);
-      } else if (s === 21) {
-        wins = b * 2;
-      }
+  this.settleRound();
+},
 
-      // Auszahlung und Persistenz
-      this.chips += wins;
+  /** Runde für neues Spiel/Route säubern */
+  resetRound({ keepBet = true }: { keepBet?: boolean } = {}) {
+    this.cards = [];
+    this.sum = 0;
+    this.isAlive = false;
+    this.hasBlackjack = false;
+    this.message = '';
+    this.roundFinished = false;
+    this.roundSettled = false;
+    if (!keepBet) {
       this.currentBet = 0;
-      localStorage.setItem('chips', String(this.chips));
       localStorage.removeItem('currentBet');
-
-      // Nachricht setzen
-      this.message = `You've won $${wins}`;
-    },
-  
+    }
+  },
 }});
